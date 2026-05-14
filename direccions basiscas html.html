@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misión Urbana A2 | Your Mexican Friend</title>
+<style>
+:root{
+  --cyan:#25d9ff;
+  --cyan2:#00bfff;
+  --magenta:#ff2bbf;
+  --magenta2:#ff4fd8;
+  --bg1:#070019;
+  --bg2:#160033;
+  --panel:#14052b;
+  --panel2:#1b0b3b;
+  --text:#f7f7ff;
+  --muted:#c9cbe7;
+  --line:#3b2a6f;
+  --good:#22c55e;
+  --bad:#ef4444;
+  --shadow:0 20px 40px rgba(0,0,0,.35),0 0 28px rgba(255,43,191,.15);
+  --font:'Segoe UI',Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:var(--font);
+  background:radial-gradient(circle at 18% 18%,rgba(255,43,191,.18),transparent 25%),radial-gradient(circle at 82% 28%,rgba(37,217,255,.14),transparent 28%),linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:var(--text);
+}
+.app{width:min(1380px,96%);margin:18px auto 28px}
+.hero{
+  position:relative;
+  overflow:hidden;
+  border-radius:26px;
+  padding:26px;
+  background:radial-gradient(circle at 20% 20%,rgba(255,43,191,.22),transparent 24%),linear-gradient(135deg,#070019,#25005a 72%,#120326);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:var(--shadow);
+}
+.hero:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:36px 36px;
+  opacity:.25;
+}
+.heroInner{position:relative;z-index:1}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:14px;font-weight:900}
+.logoBox{
+  width:86px;
+  height:86px;
+  border-radius:18px;
+  display:grid;
+  place-items:center;
+  background:radial-gradient(circle at 35% 25%,rgba(255,43,191,.45),transparent 35%),linear-gradient(135deg,#070019,#25005a);
+  border:2px solid rgba(37,217,255,.25);
+  box-shadow:0 0 24px rgba(255,43,191,.32);
+  color:var(--magenta);
+  font-size:1.95rem;
+  font-weight:1000;
+  text-shadow:2px 2px 0 var(--cyan);
+}
+.brand small{display:block;color:var(--muted);font-weight:800;margin-top:4px}
+.pill{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:8px 14px;font-weight:900}
+h1{font-size:clamp(2.1rem,4vw,4.4rem);line-height:.95;margin:18px 0 10px;letter-spacing:-1.5px}
+.hero p{max-width:890px;color:var(--muted);line-height:1.6;font-size:1.08rem;margin:0}
+.layout{display:grid;grid-template-columns:minmax(720px,1.5fr) minmax(360px,.9fr);gap:18px;margin-top:18px;align-items:start}
+.panel{background:linear-gradient(180deg,rgba(20,5,43,.96),rgba(27,11,59,.96));border:1px solid rgba(37,217,255,.18);border-radius:24px;box-shadow:var(--shadow);padding:18px}
+.side{position:sticky;top:16px}
+.topControls{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.modeBtns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:0;border-radius:14px;padding:11px 16px;font-weight:900;font-family:inherit;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.22);transform:translateY(-2px);transition:.15s}
+.btn:hover{transform:translateY(-4px)}
+.btn:active{transform:translateY(0);box-shadow:none}
+.primary{background:linear-gradient(135deg,var(--magenta),var(--magenta2));color:white}
+.secondary{background:rgba(255,255,255,.08);color:var(--text);border:1px solid rgba(37,217,255,.22)}
+.goodBtn{background:linear-gradient(135deg,var(--cyan),var(--cyan2));color:#07111f}
+.warn{background:linear-gradient(135deg,#ff78e1,var(--magenta));color:white}
+.darkBtn{background:#0d0221;color:white;border:1px solid rgba(255,255,255,.10)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.stat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:16px;padding:11px;text-align:center}
+.stat span{display:block;color:var(--muted);font-size:.74rem;font-weight:900;text-transform:uppercase}
+.stat strong{display:block;font-size:1.3rem;color:var(--cyan);margin-top:4px}
+.mapWrap{border:3px solid rgba(37,217,255,.20);border-radius:22px;overflow:auto;background:#120326;box-shadow:inset 0 0 20px rgba(255,43,191,.10)}
+.city{position:relative;width:820px;height:700px;background:linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),linear-gradient(180deg,#13022d,#1a0640);background-size:70px 70px;touch-action:none}
+.road{position:absolute;background:rgba(173,216,255,.38);border-radius:999px;box-shadow:0 0 12px rgba(37,217,255,.12)}
+.road.h{height:26px;left:0;right:0}
+.road.v{width:26px;top:0;bottom:0}
+.roadLabel{position:absolute;background:rgba(8,4,24,.65);border:1px solid rgba(37,217,255,.20);border-radius:999px;padding:3px 10px;font-size:.72rem;font-weight:1000;color:#e8ecff;z-index:6;text-shadow:0 1px 2px rgba(0,0,0,.85);pointer-events:none;white-space:nowrap}
+.roadLabel.v{transform:rotate(-90deg);transform-origin:left top}
+.place{position:absolute;min-width:92px;padding:9px 10px;border-radius:14px;background:rgba(255,255,255,.95);border:2px solid var(--cyan);font-size:.78rem;font-weight:900;text-align:center;color:#111827;line-height:1.15;box-shadow:0 6px 14px rgba(0,0,0,.22);z-index:8}
+.place.start{border-color:#c084fc;background:#f5f3ff}
+.place.end{border-color:var(--magenta);background:#ffe0f5}
+.avatar{position:absolute;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--magenta),#fb7185);color:white;font-size:30px;border:3px solid white;box-shadow:0 10px 20px rgba(0,0,0,.25),0 0 18px rgba(255,43,191,.32);z-index:25;cursor:grab;user-select:none;touch-action:none;transition:left .12s ease,top .12s ease}
+.avatar.dragging{cursor:grabbing;transition:none;transform:scale(1.08)}
+.node{position:absolute;width:13px;height:13px;border-radius:50%;background:white;opacity:.15;transform:translate(-50%,-50%)}
+.sectionTitle{margin:0 0 8px;font-size:1.55rem;letter-spacing:-.4px}
+.muted{color:var(--muted);line-height:1.55;margin:0 0 14px}
+.card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:18px;padding:14px;margin-bottom:14px}
+.taskTitle{font-weight:1000;margin-bottom:8px}
+.instruction{font-size:1.04rem;line-height:1.65;font-weight:800}
+.objective{margin-top:8px;color:var(--cyan);font-weight:1000}
+.pad{display:grid;grid-template-columns:repeat(3,62px);grid-template-rows:repeat(3,54px);gap:8px;justify-content:center;margin:12px 0}
+.padBtn{border:0;border-radius:14px;background:rgba(255,255,255,.12);color:white;font-size:1.05rem;font-weight:1000;cursor:pointer}
+.padBtn.center{cursor:default;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.18)}
+textarea{width:100%;min-height:170px;border:2px solid rgba(37,217,255,.22);background:#0b0320;color:var(--text);border-radius:16px;padding:14px;font-size:1rem;font-family:inherit;resize:vertical;outline:none;line-height:1.5}
+textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 4px rgba(37,217,255,.12)}
+.feedback{display:none;margin-top:14px;padding:14px;border-radius:16px;font-weight:800;line-height:1.55}
+.feedback.show{display:block}
+.feedback.good{background:rgba(34,197,94,.16);border-left:6px solid var(--good);color:#bbf7d0}
+.feedback.bad{background:rgba(239,68,68,.16);border-left:6px solid var(--bad);color:#fecaca}
+.feedback.neutral{background:rgba(37,217,255,.14);border-left:6px solid var(--cyan);color:#dbeafe}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.list{margin:8px 0 0 18px;color:var(--muted);line-height:1.55}
+.model{display:none;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:16px;padding:14px;margin-top:14px;line-height:1.55}
+.creator{text-align:center;color:#d6d8f5;font-weight:900;margin:16px 0 0}
+.creator span{color:var(--magenta2)}
+@media(max-width:1080px){.layout{grid-template-columns:1fr}.side{position:static}.city{height:660px}}
+@media(max-width:720px){.stats{grid-template-columns:1fr 1fr}.city{width:780px}.hero{padding:22px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero">
+  <div class="heroInner">
+    <div class="top">
+      <div class="brand"><div class="logoBox">YMF</div><div><div>Your Mexican Friend</div><small>By Carlos & Denisse</small></div></div>
+      <div class="pill">Español A2 · Direcciones claras</div>
+    </div>
+    <h1>Misión Urbana A2</h1>
+    <p>Actividad para practicar direcciones básicas. El estudiante puede mover el monito con el mouse, con el dedo, con flechas del teclado o con los botones.</p>
+  </div>
+</header>
+<main class="layout">
+<section class="panel">
+  <div class="topControls">
+    <div><h2 class="sectionTitle">Mapa interactivo</h2><p class="muted">Arrastra el monito y suéltalo en una esquina. El monito se acomoda solo a la calle más cercana.</p></div>
+    <div class="modeBtns"><button class="btn primary" id="followBtn">Modo 1: mover</button><button class="btn secondary" id="giveBtn">Modo 2: explicar</button></div>
+  </div>
+  <div class="stats"><div class="stat"><span>Modo</span><strong id="mode">1</strong></div><div class="stat"><span>XP</span><strong id="xp">0</strong></div><div class="stat"><span>Racha</span><strong id="streak">0</strong></div><div class="stat"><span>Reto</span><strong id="counter">1</strong></div></div>
+  <div class="mapWrap"><div class="city" id="city">
+    <div class="road h" style="top:100px"></div><div class="road h" style="top:250px"></div><div class="road h" style="top:400px"></div><div class="road h" style="top:550px"></div>
+    <div class="road v" style="left:120px"></div><div class="road v" style="left:300px"></div><div class="road v" style="left:480px"></div><div class="road v" style="left:660px"></div>
+    <div id="nodes"></div>
+    <div class="roadLabel" style="left:50px;top:103px">Av. Sol</div><div class="roadLabel" style="left:370px;top:103px">Av. Sol</div>
+    <div class="roadLabel" style="left:50px;top:253px">Av. Centro</div><div class="roadLabel" style="left:370px;top:253px">Av. Centro</div>
+    <div class="roadLabel" style="left:50px;top:403px">Av. Luna</div><div class="roadLabel" style="left:370px;top:403px">Av. Luna</div>
+    <div class="roadLabel" style="left:50px;top:553px">Av. Río</div><div class="roadLabel" style="left:370px;top:553px">Av. Río</div>
+    <div class="roadLabel v" style="left:129px;top:235px">Calle Norte</div><div class="roadLabel v" style="left:129px;top:590px">Calle Norte</div>
+    <div class="roadLabel v" style="left:309px;top:235px">Calle Roble</div><div class="roadLabel v" style="left:309px;top:590px">Calle Roble</div>
+    <div class="roadLabel v" style="left:489px;top:235px">Calle Flores</div><div class="roadLabel v" style="left:489px;top:590px">Calle Flores</div>
+    <div class="roadLabel v" style="left:669px;top:235px">Calle Sur</div><div class="roadLabel v" style="left:669px;top:590px">Calle Sur</div>
+    <div class="place" data-place="estacion" style="left:40px;top:22px">🚉 Estación</div><div class="place" data-place="cafeteria" style="left:220px;top:22px">☕ Café</div><div class="place" data-place="banco" style="left:400px;top:22px">🏦 Banco</div><div class="place" data-place="escuela" style="left:580px;top:22px">🏫 Escuela</div>
+    <div class="place" data-place="parque" style="left:40px;top:172px">🌳 Parque</div><div class="place" data-place="farmacia" style="left:220px;top:172px">💊 Farmacia</div><div class="place" data-place="museo" style="left:400px;top:172px">🖼️ Museo</div><div class="place" data-place="cine" style="left:580px;top:172px">🎬 Cine</div>
+    <div class="place" data-place="hotel" style="left:40px;top:322px">🏨 Hotel</div><div class="place" data-place="restaurante" style="left:220px;top:322px">🍽️ Restaurante</div><div class="place" data-place="hospital" style="left:400px;top:322px">🏥 Hospital</div><div class="place" data-place="supermercado" style="left:580px;top:322px">🛒 Súper</div>
+    <div class="place" data-place="gimnasio" style="left:40px;top:472px">🏋️ Gimnasio</div><div class="place" data-place="biblioteca" style="left:220px;top:472px">📚 Biblioteca</div><div class="place" data-place="metro" style="left:400px;top:472px">🚇 Metro</div><div class="place" data-place="mercado" style="left:580px;top:472px">🛍️ Mercado</div>
+    <div class="avatar" id="avatar">🧍</div>
+  </div></div>
+</section>
+<aside class="panel side">
+  <div id="followBox">
+    <h2 class="sectionTitle">Modo 1: sigue la ruta</h2><p class="muted">Lee instrucciones largas pero fáciles y mueve el monito.</p>
+    <div class="card"><div class="taskTitle">Instrucción A2</div><div class="instruction" id="instruction"></div><div class="objective" id="objective"></div></div>
+    <div class="card"><div class="taskTitle">Controles</div><div class="pad"><div></div><button class="padBtn" id="up">⬆️</button><div></div><button class="padBtn" id="left">⬅️</button><div class="padBtn center">🧍</div><button class="padBtn" id="right">➡️</button><div></div><button class="padBtn" id="down">⬇️</button><div></div></div><p class="muted" style="margin:0">También puedes arrastrar el monito con el mouse o usar las flechas del teclado.</p></div>
+    <div class="feedback" id="fb1"></div>
+    <div class="actions"><button class="btn warn" id="hint">💡 Pista</button><button class="btn secondary" id="reset">↺ Reiniciar</button><button class="btn goodBtn" id="check">Revisar</button><button class="btn darkBtn" id="next">Siguiente</button></div>
+    <div class="card" style="margin-top:14px"><div class="taskTitle">Vocabulario útil</div><ul class="list"><li>sigue derecho</li><li>gira a la derecha</li><li>gira a la izquierda</li><li>sube / baja</li><li>una cuadra / dos cuadras</li></ul></div>
+  </div>
+  <div id="giveBox" style="display:none">
+    <h2 class="sectionTitle">Modo 2: da direcciones</h2><p class="muted">El estudiante escribe instrucciones básicas, pero completas.</p>
+    <div class="card"><div class="taskTitle">Situación</div><div class="instruction" id="givePrompt"></div></div>
+    <textarea id="answer" placeholder="Ejemplo: Sal de la estación. Sigue derecho dos cuadras. Gira a la derecha. El banco está a la izquierda."></textarea>
+    <div class="feedback" id="fb2"></div>
+    <div class="actions"><button class="btn warn" id="model">Ver modelo</button><button class="btn secondary" id="clear">Limpiar</button><button class="btn goodBtn" id="checkGive">Revisar</button><button class="btn darkBtn" id="nextGive">Siguiente</button></div>
+    <div class="model" id="modelBox"></div>
+    <div class="card" style="margin-top:14px"><div class="taskTitle">Para A2 debe tener:</div><ul class="list"><li>un inicio: Sal de...</li><li>movimiento: sigue / camina / ve</li><li>dirección: derecha, izquierda, arriba o abajo</li><li>destino final</li></ul></div>
+  </div>
+</aside>
+</main>
+<p class="creator">By <span>Carlos & Denisse</span> · Your Mexican Friend</p>
+</div>
+<script>
+const cols=[120,300,480,660];
+const rows=[100,250,400,550];
+const anchors={
+  estacion:{c:0,r:0},cafeteria:{c:1,r:0},banco:{c:2,r:0},escuela:{c:3,r:0},
+  parque:{c:0,r:1},farmacia:{c:1,r:1},museo:{c:2,r:1},cine:{c:3,r:1},
+  hotel:{c:0,r:2},restaurante:{c:1,r:2},hospital:{c:2,r:2},supermercado:{c:3,r:2},
+  gimnasio:{c:0,r:3},biblioteca:{c:1,r:3},metro:{c:2,r:3},mercado:{c:3,r:3}
+};
+const labels={
+  estacion:'estación',cafeteria:'café',banco:'banco',escuela:'escuela',parque:'parque',farmacia:'farmacia',museo:'museo',cine:'cine',hotel:'hotel',restaurante:'restaurante',hospital:'hospital',supermercado:'súper',gimnasio:'gimnasio',biblioteca:'biblioteca',metro:'metro',mercado:'mercado'
+};
+const followChallenges=[
+  {start:'estacion',target:'banco',text:'Empieza en la estación. Mira la avenida que está enfrente de ti: se llama Av. Sol. Camina derecho por Av. Sol hacia la derecha. Primero pasas el café. Después sigues una cuadra más. Cuando llegues al lugar donde la gente guarda dinero, se detiene o usa una tarjeta, para ahí. ¿A dónde llegas?',hint:'No tienes que bajar. Camina dos cuadras a la derecha por Av. Sol.'},
+  {start:'cafeteria',target:'farmacia',text:'Empieza en el café. Estás en Av. Sol, cerca de Calle Roble. Ahora baja por Calle Roble solamente una cuadra. No gires a la izquierda ni a la derecha. Cuando veas un lugar donde puedes comprar medicina, vitaminas o algo para el dolor de cabeza, detente ahí. ¿A dónde llegas?',hint:'Baja una cuadra desde el café. El lugar vende medicina.'},
+  {start:'parque',target:'museo',text:'Empieza en el parque. Estás sobre Av. Centro. Camina hacia la derecha por la misma avenida. Primero pasas la farmacia. Después sigues otra cuadra. El destino es un lugar donde puedes ver pinturas, objetos antiguos o exposiciones. Detente en ese lugar. ¿A dónde llegas?',hint:'Ve dos cuadras a la derecha por Av. Centro. El lugar tiene arte o exposiciones.'},
+  {start:'hotel',target:'metro',text:'Empieza en el hotel. Primero camina dos cuadras a la derecha por Av. Luna. Pasa el restaurante y después pasa el hospital. Cuando estés en la esquina de Calle Flores, baja una cuadra. El destino es un lugar para tomar transporte y moverte por la ciudad. ¿A dónde llegas?',hint:'Primero derecha dos cuadras. Después baja una cuadra. Es transporte.'},
+  {start:'escuela',target:'mercado',text:'Empieza en la escuela. Estás en la parte de arriba del mapa, sobre Calle Sur. Baja por Calle Sur. Pasa el cine, después pasa el súper y continúa una cuadra más. El destino es un lugar donde puedes comprar comida, fruta, verduras o cosas para la casa. ¿A dónde llegas?',hint:'Todo el camino es hacia abajo por Calle Sur. El lugar es para comprar muchas cosas.'},
+  {start:'biblioteca',target:'hospital',text:'Empieza en la biblioteca. Primero sube una cuadra por Calle Roble hasta llegar a Av. Luna. Después gira a la derecha y camina una cuadra. El destino es un lugar importante cuando una persona está enferma o necesita ver a un doctor. Detente ahí. ¿A dónde llegas?',hint:'Sube una cuadra y luego ve una cuadra a la derecha. Es un lugar de salud.'},
+  {start:'supermercado',target:'restaurante',text:'Empieza en el súper. Estás en Av. Luna, cerca de Calle Sur. Camina hacia la izquierda por la misma avenida. Primero pasas el hospital. Después sigues una cuadra más. El destino es un lugar donde una persona puede sentarse, pedir comida y comer. ¿A dónde llegas?',hint:'Ve dos cuadras a la izquierda por Av. Luna. El lugar es para comer.'},
+  {start:'metro',target:'museo',text:'Empieza en el metro. Estás en Av. Río y Calle Flores. Sube por Calle Flores. Primero pasas el hospital. Después continúa una cuadra más hasta Av. Centro. El destino es un lugar cultural donde puedes ver arte, historia o exposiciones. ¿A dónde llegas?',hint:'Sube dos cuadras por Calle Flores. Es un lugar cultural.'},
+  {start:'gimnasio',target:'cafeteria',text:'Empieza en el gimnasio. Sube por Calle Norte dos cuadras hasta llegar a Av. Centro. Después gira a la derecha y camina una cuadra. Luego sube una cuadra más por Calle Roble. El destino es un lugar pequeño donde puedes tomar café, té o comer un pan. ¿A dónde llegas?',hint:'Sube, luego derecha y después sube otra vez. El lugar vende café.'},
+  {start:'mercado',target:'escuela',text:'Empieza en el mercado. Sube por Calle Sur. Primero pasas el súper. Después pasas el cine. Continúa una cuadra más hasta llegar a Av. Sol. El destino es un lugar donde los estudiantes van a clases y los maestros enseñan. ¿A dónde llegas?',hint:'Sube tres cuadras por Calle Sur. El lugar es para estudiar.'}
+];
+const giveChallenges=[
+  {from:'estacion',to:'farmacia',prompt:'Estás en la estación. Una persona quiere ir a la farmacia, pero no conoce la ciudad. Escribe instrucciones claras y simples. Usa frases como: camina, sigue derecho, gira, sube o baja.',model:'Sal de la estación. Camina una cuadra a la derecha por Av. Sol. Vas a pasar el café. Después gira a la derecha y baja una cuadra por Calle Roble. La farmacia está ahí.'},
+  {from:'hotel',to:'banco',prompt:'Estás en el hotel. Una persona necesita ir al banco para sacar dinero. Explícale la ruta paso a paso con palabras fáciles.',model:'Sal del hotel. Sube dos cuadras por Calle Norte hasta llegar a Av. Sol. Después gira a la derecha y camina dos cuadras. Pasa el café. El banco está después del café.'},
+  {from:'parque',to:'cine',prompt:'Estás en el parque. Tu amigo quiere ir al cine. Escribe una ruta clara. Incluye cuántas cuadras debe caminar y hacia qué dirección.',model:'Sal del parque. Camina derecho por Av. Centro hacia la derecha. Pasa la farmacia y el museo. Sigue una cuadra más. El cine está al final de esa avenida.'},
+  {from:'mercado',to:'biblioteca',prompt:'Estás en el mercado. Una estudiante quiere ir a la biblioteca para estudiar. Dale instrucciones simples pero completas.',model:'Sal del mercado. Camina dos cuadras a la izquierda por Av. Río. Primero pasas el metro. Después llegas a la biblioteca. La biblioteca está antes del gimnasio.'},
+  {from:'escuela',to:'restaurante',prompt:'Estás en la escuela. Una persona tiene hambre y quiere ir al restaurante. Escribe instrucciones con dos o tres pasos claros.',model:'Sal de la escuela. Baja dos cuadras por Calle Sur hasta Av. Luna. Después gira a la izquierda y camina dos cuadras. El restaurante está antes del hotel.'},
+  {from:'metro',to:'cafeteria',prompt:'Estás en el metro. Una persona quiere tomar un café. Explícale cómo llegar al café con instrucciones básicas.',model:'Sal del metro. Sube tres cuadras por Calle Flores hasta Av. Sol. Después gira a la izquierda y camina una cuadra. El café está ahí.'}
+];
+let currentMode='follow';
+let followIndex=0;
+let giveIndex=0;
+let xp=0;
+let streak=0;
+let avatarNode={c:0,r:0};
+let isDragging=false;
+const get=id=>document.getElementById(id);
+const avatar=get('avatar');
+const city=get('city');
+for(let r=0;r<rows.length;r++){
+  for(let c=0;c<cols.length;c++){
+    const dot=document.createElement('div');
+    dot.className='node';
+    dot.style.left=cols[c]+'px';
+    dot.style.top=rows[r]+'px';
+    get('nodes').appendChild(dot);
+  }
+}
+function setAvatar(c,r){
+  avatarNode={c:c,r:r};
+  avatar.style.left=(cols[c]-26)+'px';
+  avatar.style.top=(rows[r]-26)+'px';
+}
+function nearestNode(x,y){
+  let best={c:0,r:0,d:999999};
+  for(let r=0;r<rows.length;r++){
+    for(let c=0;c<cols.length;c++){
+      const dx=x-cols[c];
+      const dy=y-rows[r];
+      const d=dx*dx+dy*dy;
+      if(d<best.d){best={c:c,r:r,d:d};}
+    }
+  }
+  return best;
+}
+function clearPlaces(){
+  document.querySelectorAll('.place').forEach(p=>p.classList.remove('start','end'));
+}
+function markPlaces(start,end){
+  clearPlaces();
+  document.querySelectorAll('.place').forEach(p=>{
+    if(p.dataset.place===start){p.classList.add('start');}
+    if(p.dataset.place===end){p.classList.add('end');}
+  });
+}
+function updateStats(){
+  get('xp').textContent=xp;
+  get('streak').textContent=streak;
+  get('mode').textContent=currentMode==='follow'?'1':'2';
+  get('counter').textContent=currentMode==='follow'?followIndex+1:giveIndex+1;
+}
+function showFeedback(box,type,msg){
+  box.className='feedback show '+type;
+  box.innerHTML=msg;
+}
+function loadFollow(){
+  currentMode='follow';
+  get('followBox').style.display='block';
+  get('giveBox').style.display='none';
+  get('followBtn').className='btn primary';
+  get('giveBtn').className='btn secondary';
+  const challenge=followChallenges[followIndex];
+  get('instruction').textContent=challenge.text;
+  get('objective').textContent='Meta: mueve el monito y revisa tu respuesta.';
+  get('fb1').className='feedback';
+  const start=anchors[challenge.start];
+  setAvatar(start.c,start.r);
+  markPlaces(challenge.start,'');
+  updateStats();
+}
+function checkFollow(){
+  const challenge=followChallenges[followIndex];
+  const target=anchors[challenge.target];
+  if(avatarNode.c===target.c && avatarNode.r===target.r){
+    xp+=10;
+    streak+=1;
+    markPlaces(challenge.start,challenge.target);
+    showFeedback(get('fb1'),'good','<b>¡Correcto!</b> Llegaste a <b>'+labels[challenge.target]+'</b>.');
+  }else{
+    streak=0;
+    markPlaces(challenge.start,challenge.target);
+    showFeedback(get('fb1'),'bad','<b>Todavía no.</b> El destino correcto era <b>'+labels[challenge.target]+'</b>. Inténtalo otra vez.');
+  }
+  updateStats();
+}
+function nextFollow(){
+  followIndex=(followIndex+1)%followChallenges.length;
+  loadFollow();
+}
+function moveAvatar(direction){
+  if(currentMode!=='follow'){return;}
+  let c=avatarNode.c;
+  let r=avatarNode.r;
+  if(direction==='up' && r>0){r-=1;}
+  if(direction==='down' && r<rows.length-1){r+=1;}
+  if(direction==='left' && c>0){c-=1;}
+  if(direction==='right' && c<cols.length-1){c+=1;}
+  setAvatar(c,r);
+}
+function loadGive(){
+  currentMode='give';
+  get('followBox').style.display='none';
+  get('giveBox').style.display='block';
+  get('followBtn').className='btn secondary';
+  get('giveBtn').className='btn primary';
+  const challenge=giveChallenges[giveIndex];
+  get('givePrompt').textContent=challenge.prompt+' De '+labels[challenge.from]+' a '+labels[challenge.to]+'.';
+  get('answer').value='';
+  get('fb2').className='feedback';
+  get('modelBox').style.display='none';
+  get('modelBox').innerHTML='';
+  markPlaces(challenge.from,challenge.to);
+  const start=anchors[challenge.from];
+  setAvatar(start.c,start.r);
+  updateStats();
+}
+function normalizeText(text){
+  let value=String(text||'').toLowerCase();
+  const changes={á:'a',é:'e',í:'i',ó:'o',ú:'u',ü:'u',ñ:'n','¿':'','?':'','¡':'','!':'','.' :'',',':'',';':'',':':''};
+  for(const key in changes){value=value.split(key).join(changes[key]);}
+  while(value.indexOf('  ')>=0){value=value.split('  ').join(' ');}
+  return value.trim();
+}
+function checkGive(){
+  const challenge=giveChallenges[giveIndex];
+  const text=normalizeText(get('answer').value);
+  if(!text){showFeedback(get('fb2'),'neutral','Escribe una respuesta primero.');return;}
+  let score=0;
+  if(['sal','sale','empieza','comienza'].some(word=>text.includes(word))){score+=1;}
+  if(['ve','camina','sigue','sube','baja'].some(word=>text.includes(word))){score+=1;}
+  if(['derecha','izquierda','arriba','abajo'].some(word=>text.includes(word))){score+=1;}
+  if(text.includes(normalizeText(labels[challenge.to])) || text.includes(challenge.to)){score+=1;}
+  if(text.split(' ').length>=12){score+=1;}
+  if(score>=4){
+    xp+=10;
+    streak+=1;
+    showFeedback(get('fb2'),'good','<b>Muy bien.</b> Tus instrucciones son claras para A2.');
+  }else{
+    streak=0;
+    showFeedback(get('fb2'),'neutral','Vas bien, pero agrega más información: inicio, movimiento, dirección y destino.');
+  }
+  updateStats();
+}
+function pointerPosition(event){
+  const rect=city.getBoundingClientRect();
+  return {x:event.clientX-rect.left,y:event.clientY-rect.top};
+}
+avatar.addEventListener('pointerdown',event=>{
+  if(currentMode!=='follow'){return;}
+  isDragging=true;
+  avatar.classList.add('dragging');
+  avatar.setPointerCapture(event.pointerId);
+});
+avatar.addEventListener('pointermove',event=>{
+  if(!isDragging){return;}
+  const pos=pointerPosition(event);
+  const x=Math.max(26,Math.min(794,pos.x));
+  const y=Math.max(26,Math.min(674,pos.y));
+  avatar.style.left=(x-26)+'px';
+  avatar.style.top=(y-26)+'px';
+});
+avatar.addEventListener('pointerup',event=>{
+  if(!isDragging){return;}
+  isDragging=false;
+  avatar.classList.remove('dragging');
+  const pos=pointerPosition(event);
+  const node=nearestNode(pos.x,pos.y);
+  setAvatar(node.c,node.r);
+});
+get('up').onclick=()=>moveAvatar('up');
+get('down').onclick=()=>moveAvatar('down');
+get('left').onclick=()=>moveAvatar('left');
+get('right').onclick=()=>moveAvatar('right');
+get('check').onclick=checkFollow;
+get('next').onclick=nextFollow;
+get('reset').onclick=loadFollow;
+get('hint').onclick=()=>showFeedback(get('fb1'),'neutral','<b>Pista:</b> '+followChallenges[followIndex].hint);
+get('followBtn').onclick=loadFollow;
+get('giveBtn').onclick=loadGive;
+get('checkGive').onclick=checkGive;
+get('nextGive').onclick=()=>{giveIndex=(giveIndex+1)%giveChallenges.length;loadGive();};
+get('clear').onclick=()=>{get('answer').value='';get('fb2').className='feedback';get('modelBox').style.display='none';};
+get('model').onclick=()=>{
+  const challenge=giveChallenges[giveIndex];
+  get('modelBox').style.display='block';
+  get('modelBox').innerHTML='<b>Modelo:</b><br><br>'+challenge.model;
+};
+document.addEventListener('keydown',event=>{
+  if(currentMode!=='follow'){return;}
+  if(event.key==='ArrowUp'){event.preventDefault();moveAvatar('up');}
+  if(event.key==='ArrowDown'){event.preventDefault();moveAvatar('down');}
+  if(event.key==='ArrowLeft'){event.preventDefault();moveAvatar('left');}
+  if(event.key==='ArrowRight'){event.preventDefault();moveAvatar('right');}
+});
+loadFollow();
+</script>
+</body>
+</html>
